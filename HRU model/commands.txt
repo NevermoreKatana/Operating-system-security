@@ -1,0 +1,47 @@
+Операторы
+add_right subj, obj, right: Добавляет право right для субъекта subj на объект obj.
+
+delete_right subj, obj, right: Удаляет право right для субъекта subj на объекте obj.
+
+create_subject subj: Создает новый субъект subj.
+
+create_object obj: Создает новый объект obj.
+
+delete_object obj : Удаляет объект obj, включая все права доступа на этот объект.
+
+delete_subject subj: Удаляет субъект subj, включая все права доступа этого субъекта.
+
+print_matrix: Выводит матрицу доступа, показывая, какие права доступа субъектов имеют на объекты.
+
+save_database: Сохраняет текущее состояние базы данных в файл в формате JSON.
+
+
+""" Дополнительно """
+Есть четыре вида прав
+1. r
+2. w
+3. x
+4. o
+
+Команды
+
+cmd_create_file sub obj
+ex:
+cmd_create_file katana test
+cmd_create_file user1 text
+cmd_create_file user1 asap
+cmd_create_file katana o
+
+cmd_delete_file sub obj
+ex:
+cmd_delete_file katana test
+cmd_delete_file katana o
+cmd_delete_file user1 text
+cmd_delete_file user1 asap
+
+cmd_grant_right sub1 sub2 obj right
+ex:
+cmd_grant_right katana user1 test w
+cmd_grant_right katana user1 o x
+cmd_grant_right user1 katana asap r
+cmd_grant_right user1 katana text o
