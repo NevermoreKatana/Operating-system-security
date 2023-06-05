@@ -1,5 +1,5 @@
 # Безопасность операционных систем
-
+<a href="https://codeclimate.com/github/NevermoreKatana/Operating-system-security/maintainability"><img src="https://api.codeclimate.com/v1/badges/c4a6dc8125d033de2747/maintainability" /></a>
 ## Описание
 Этот проект содержит реализации различных методов обеспечения безопасности операционных систем.
 
