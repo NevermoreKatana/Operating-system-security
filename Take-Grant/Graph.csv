@@ -1,0 +1,7 @@
+file1;file2;file3
+client1;client2
+client1;file1:a;client2:g
+client2
+file1;file2:a
+file2;file3:a
+file3

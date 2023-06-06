@@ -1,0 +1,37 @@
+Создание сущности:
+
+Синтаксис: /cr(rule, from_entity, to_entity, entity_type)
+Пример: /cr(t, client1, file1, d)
+Описание: Команда создает новую сущность с заданными правилами доступа (rule) и типом сущности (entity_type). Связь устанавливается от сущности from_entity к to_entity.
+
+example:
+/cr(a,client1,file10,s) #Subj
+/cr(g,client1,file12,o) #Obj
+
+Проверка возможности доступа:
+
+Синтаксис: /tk(rule, from_entity, to_entity, on_entity)
+Пример: /tk(t, client1, file1, file2)
+Описание: Команда проверяет, может ли сущность from_entity получить доступ с правилом rule к сущности to_entity, используя промежуточную сущность on_entity (если необходимо).
+example:
+/tk(a,client1,file3,file4) # True
+/tk(a,client1,file3,file5) # False
+
+Проверка разрешения на доступ:
+
+Синтаксис: /gr(rule, from_entity, to_entity, on_entity)
+Пример: /gr(t, client1, file1, file2)
+Описание: Команда проверяет, разрешено ли сущности from_entity предоставить доступ с правилом rule к сущности to_entity, используя промежуточную сущность on_entity.
+
+example:
+/gr(a,client1,client2,file3) #True
+/gr(a,client2,client1,file1) #False
+
+Удаление сущности:
+
+Синтаксис: /rm(from_entity, to_entity)
+Пример: /rm(client1, file1)
+Описание: Команда удаляет связь между сущностями from_entity и to_entity.
+
+example
+/rm(file3,file4)
