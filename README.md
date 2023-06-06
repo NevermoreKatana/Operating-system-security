@@ -32,6 +32,9 @@
 
 Основная идея модели Белла-Лападулла заключается в принципе "неизлишне права доступа" (principle of least privilege) и обязательном контроле доступа (mandatory access control). Согласно этой модели, каждый субъект (пользователь или процесс) и объект (файлы, базы данных и т.д.) в системе имеют определенный уровень секретности и важности, выраженный в виде меток безопасности.
 
+# Реализация эмулятора дискреционной ролевой модели(RBAC):
+Ролевая модель, также известная как RBAC (Role-Based Access Control), является одним из методов контроля доступа в информационных системах. В этой модели доступ к ресурсам системы предоставляется на основе ролей, которые назначаются пользователям.
+
 # P.s. Весь код сделан в обучающих целях
 Я не являюсь профессиональным разработчиком, данные программы сделаны в целях обучения, я никого не призываю использовать данный код как проффесиональный.
 
@@ -68,6 +71,9 @@ The main idea of the Take-Grant model is to represent the system in the form of 
 The Bella-Lapadulla model is a security and access control model used to protect the confidentiality and integrity of information in computer systems. Named after researchers Dennis Bell and Roger Lapadulla, this model was introduced in 1973 and has become one of the main contributions to the field of information security.
 
 The main idea of the Bella-Lapadulla model is the principle of "non-exclusive access rights" (principle of least privilege) and mandatory access control (mandatory access control). According to this model, each subject (user or process) and object (files, databases, etc.) in the system have a certain level of secrecy and importance, expressed in the form of security labels.
+
+# Implementation of the Discretionary Role Model Emulator (RBAC):
+The role model, also known as RBAC (Role-Based Access Control), is one of the access control methods in information systems. In this model, access to system resources is provided based on the roles that are assigned to users.
 
 # P.s. All the code is made for educational purposes
 I am not a professional developer, these programs are made for training purposes, I do not encourage anyone to use this code as professional.
