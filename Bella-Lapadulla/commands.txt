@@ -1,0 +1,18 @@
+False - Нельзя
+True - Разрешено
+
+read(subject, object_name, permission)
+
+example:
+read(subject1,file1,r) # False
+read(subject3,object1,r) # True
+read(subject1,object3,r) # False
+read(nevermore,file1,r) # False
+
+write(subject, object_name, permission)
+
+example:
+write(subject2,object1,w) # True
+write(katana,object1,w) # True
+write(subject1,object3,w) # False
+write(subject1,file1,w) # False
