@@ -1,0 +1,29 @@
+{
+  "roles": {
+    "admin": {
+      "name": "admin",
+      "subjects": ["user", "admin"],
+      "objects": {
+        "file": ["read", "write"],
+        "settings": ["read", "write", "delete"]
+      }
+    },
+    "user": {
+      "name": "user",
+      "subjects": ["user"],
+      "objects": {
+        "file": ["read"],
+        "settings": ["read", "write"]
+      }
+    }
+  },
+  "subjects": ["user", "admin"],
+  "objects": {
+    "file": {
+      "permissions": ["read", "write"]
+    },
+    "settings": {
+      "permissions": ["read", "write", "delete"]
+    }
+  }
+}

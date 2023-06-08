@@ -1,0 +1,11 @@
+Enter role name: editor
+Enter parent roles (comma-separated): user
+Common subjects from parent roles: {'user'}
+Enter subjects (comma-separated): user
+Enter object name (or 'done' to finish): file
+Available permissions: ['read']
+Enter permissions (comma-separated): read
+Enter additional permissions (comma-separated): write
+Enter object name (or 'done' to finish): done
+Success
+

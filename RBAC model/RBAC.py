@@ -1,95 +1,100 @@
-import csv
-from configparser import ConfigParser
+import json
 
-# Загрузка матрицы доступа из accessMatrix.csv
-def load_access_matrix(file_path):
-    access_matrix = {}
-    with open(file_path, 'r') as file:
-        reader = csv.reader(file, delimiter=';')
-        headers = next(reader)
-        for row in reader:
-            subject = row[0]
-            access_matrix[subject] = {}
-            for i in range(1, len(headers)):
-                access_matrix[subject][headers[i]] = row[i]
-    return access_matrix
+def load_data():
+    with open("roles.json") as json_file:
+        data = json.load(json_file)
+        return data
 
-# Загрузка атрибутов объектов из objects.ini
-def load_object_attributes(file_path):
-    config = ConfigParser()
-    config.read(file_path)
-    objects = {}
-    for section in config.sections():
-        objects[section] = dict(config.items(section))
-    return objects
+def save_data(data):
+    with open("roles_out.json", "w") as json_file:
+        json.dump(data, json_file)
 
-# Загрузка атрибутов субъектов из subjects.ini
-def load_subject_attributes(file_path):
-    config = ConfigParser()
-    config.read(file_path)
-    subjects = {}
-    for section in config.sections():
-        subjects[section] = dict(config.items(section))
-    return subjects
+def create_role(data):
+    role_name = input("Enter role name: ")
 
-# Проверка доступа к объекту с заданными разрешениями
-def check_access(subject, object_name, permissions):
-    if subject in access_matrix and object_name in access_matrix[subject]:
-        object_permissions = access_matrix[subject][object_name]
-        for permission in permissions:
-            if permission not in object_permissions:
-                return False
-        return True
-    return False
+    if role_name in data["roles"]:
+        print("Error: Role already exists.")
+        return
 
-# Проверка наследования разрешений по иерархии ролей
-def inherit_permissions(role):
-    permissions = set()
-    if role in role_hierarchy:
-        parent_roles = role_hierarchy[role]
+    role = {
+        "name": role_name,
+        "subjects": [],
+        "objects": []
+    }
+
+    parent_roles = input("Enter parent roles (comma-separated): ").split(",")
+    parent_subjects = set()
+
+    for parent_role in parent_roles:
+        if parent_role in data["roles"]:
+            parent_subjects.update(data["roles"][parent_role]["subjects"])
+        else:
+            print(f"Error: Parent role '{parent_role}' does not exist.")
+            return
+
+    print("Common subjects from parent roles:", parent_subjects)
+
+    subjects = input("Enter subjects (comma-separated): ").split(",")
+
+    for subject in subjects:
+        if subject not in data["subjects"]:
+            print(f"Error: Subject '{subject}' does not exist.")
+            return
+        if subject not in parent_subjects:
+            print(f"Error: Subject '{subject}' is not a common subject from parent roles.")
+            return
+
+    role["subjects"] = subjects
+
+    objects = []
+
+    while True:
+        object_name = input("Enter object name (or 'done' to finish): ")
+
+        if object_name == "done":
+            break
+
+        if object_name not in data["objects"]:
+            print(f"Error: Object '{object_name}' does not exist.")
+            return
+
+        parent_permissions = set()
+
         for parent_role in parent_roles:
-            permissions.update(inherit_permissions(parent_role))
-            if parent_role in permission_assignments:
-                permissions.update(permission_assignments[parent_role])
-    if role in permission_assignments:
-        permissions.update(permission_assignments[role])
-    return permissions
+            if parent_role in data["roles"]:
+                parent_permissions.update(data["roles"][parent_role]["objects"].get(object_name, []))
 
-# Загрузка данных из файлов
-access_matrix = load_access_matrix('accessMatrix.csv')
-object_attributes = load_object_attributes('objects.ini')
-subject_attributes = load_subject_attributes('subjects.ini')
+        available_permissions = data["objects"][object_name]["permissions"]
+        print("Available permissions:", available_permissions)
 
-# Создание иерархии ролей
-role_hierarchy = {
-    'owner': [],
-    'manager': ['owner'],
-    'user': ['manager'],
-    'adv:user': ['user'],
-    'adv:manager': ['manager']
-}
+        permissions = input("Enter permissions (comma-separated): ").split(",")
 
-# Назначение разрешений ролям
-permission_assignments = {
-    'owner': ['111'],
-    'manager': ['110'],
-    'user': ['100'],
-    'adv:user': ['110'],
-    'adv:manager': ['110']
-}
+        for permission in permissions:
+            if permission not in available_permissions:
+                print(f"Error: Permission '{permission}' is not available for object '{object_name}'.")
+                return
+            if permission not in parent_permissions:
+                print(f"Error: Permission '{permission}' is not inherited from parent roles.")
+                return
 
-# Пример использования
-subject = 'subject1'
-object_name = 'object1'
-permissions = ['111', '110']
+        additional_permissions = input("Enter additional permissions (comma-separated): ").split(",")
+        permissions.extend(additional_permissions)
 
-# Проверка доступа
-if check_access(subject, object_name, permissions):
-    print(f"Subject '{subject}' has access to object '{object_name}' with permissions {permissions}")
-else:
-    print(f"Subject '{subject}' does not have access to object '{object_name}' with permissions {permissions}")
+        objects.append({
+            "name": object_name,
+            "permissions": permissions
+        })
 
-# Проверка наследования разрешений
-subject_role = 'adv:user'
-inherited_permissions = inherit_permissions(subject_role)
-print(f"Permissions inherited by role '{subject_role}': {inherited_permissions}")
+    role["objects"] = objects
+
+    data["roles"][role_name] = role
+    save_data(data)
+    print("Success")
+
+def main():
+    data = load_data()
+    create_role(data)
+    print(json.dumps(data, indent=4))
+
+if __name__ == "__main__":
+    main()
